@@ -8,14 +8,28 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local b = Rayfield:CreateWindow({
     Name = "💎 KatovnHub | TSB (Premium)",
+    Icon = 0,
     LoadingTitle = "KatovnHub Premium",
-    LoadingSubtitle = "Full Template",
+    LoadingSubtitle = "Golden Edition ✨",
+    ShowText = "KatovnHub",
+    Theme = "AmberGlow", -- 🌟 VÀNG KIM 🌟
+
     ToggleUIKeybind = "K",
+
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "KatovnHub",
         FileName = "TSB_Premium"
-    }
+    },
+
+    Discord = {
+        Enabled = false
+    },
+
+    KeySystem = false
 })
 
 -- ===== TABS =====
@@ -91,4 +105,3 @@ Setting:CreateButton({
         game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
     end
 })
-
