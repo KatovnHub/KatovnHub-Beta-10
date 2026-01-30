@@ -8,23 +8,16 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local b = Rayfield:CreateWindow({
     Name = "🆓 KatovnHub | TSB (Free)",
-    Icon = 115055477301086, -- ✅ LOGO FREE
+    Icon = 115055477301086, -- LOGO FREE
     LoadingTitle = "KatovnHub Free",
     LoadingSubtitle = "Community Version",
-    Theme = "DarkBlue", -- ✅ KHÔNG ĐỤNG PREMIUM
+    Theme = "DarkBlue",
     ToggleUIKeybind = "K",
-
-    DisableRayfieldPrompts = false,
-    DisableBuildWarnings = false,
 
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "KatovnHub",
         FileName = "TSB_Free"
-    },
-
-    Discord = {
-        Enabled = false
     },
 
     KeySystem = false
@@ -35,7 +28,7 @@ local Tech        = b:CreateTab("Tech", "cpu")
 local Moveset     = b:CreateTab("Moveset", "sword")
 local Troll       = b:CreateTab("Troll Player", "smile")
 local More        = b:CreateTab("Script More", "layers")
-local Discord     = b:CreateTab("Discord", "message-circle")
+local UpdatePrem  = b:CreateTab("Update Hub Prem", "bell") -- ✅ TAB MỚI
 local Setting     = b:CreateTab("Setting", "settings")
 
 -- ===== TECH =====
@@ -77,11 +70,29 @@ More:CreateButton({
     end
 })
 
--- ===== DISCORD =====
-Discord:CreateButton({
-    Name = "Copy Discord Invite",
+-- ===== UPDATE HUB PREMIUM =====
+UpdatePrem:CreateLabel("🔔 Premium Update & Community")
+
+UpdatePrem:CreateButton({
+    Name = "Join Discord (Premium Update)",
     Callback = function()
         setclipboard("https://discord.gg/yourserver")
+        Rayfield:Notify({
+            Title = "KatovnHub",
+            Content = "Discord link copied!",
+            Duration = 4
+        })
+    end
+})
+
+UpdatePrem:CreateButton({
+    Name = "What does Premium have?",
+    Callback = function()
+        Rayfield:Notify({
+            Title = "KatovnHub Premium",
+            Content = "Anti Hacker • Combo Script • Full Moveset • VIP Features",
+            Duration = 6
+        })
     end
 })
 
@@ -89,6 +100,9 @@ Discord:CreateButton({
 Setting:CreateButton({
     Name = "Rejoin Server",
     Callback = function()
-        game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
+        game:GetService("TeleportService"):Teleport(
+            game.PlaceId,
+            game.Players.LocalPlayer
+        )
     end
 })
