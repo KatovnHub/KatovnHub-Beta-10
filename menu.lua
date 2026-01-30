@@ -1,46 +1,56 @@
 -- ==============================
--- KatovnHub | TSB | MENU LOADER
+-- KatovnHub | TSB | MENU LOADER (FIXED)
 -- ==============================
 if getgenv().Katovn_Menu_Loaded then return end
 getgenv().Katovn_Menu_Loaded = true
 
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
--- ===== RAW LINKS (BRO CHỈ CẦN ĐỔI LINK) =====
+-- ===== RAW LINKS =====
 local LINKS = {
     FREE = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/freemium.lua",
     PREMIUM = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/premium.lua",
     KEYS = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/keys.lua"
 }
 
--- ===== LOAD KEYS =====
-local PremiumKeys = {}
-local success, result = pcall(function()
-    return loadstring(game:HttpGet(LINKS.KEYS))()
-end)
-
-if success and type(result) == "table" then
-    PremiumKeys = result
-else
-    warn("Failed to load keys.lua")
-end
--- ===== MENU WINDOW =====
+-- ==============================
+-- CREATE WINDOW FIRST (QUAN TRỌNG)
+-- ==============================
 local Window = Rayfield:CreateWindow({
     Name = "👑 KatovnHub | TSB",
-    Icon = 95214547594099, -- logo trung tâm (hoặc để 0)
+    Icon = 95214547594099,
     LoadingTitle = "KatovnHub Loader",
-    LoadingSubtitle = "Free / Premium System",
-    Theme = "Default",
-    ToggleUIKeybind = "K",
-    KeySystem = false
+    LoadingSubtitle = "Free / Premium",
+    ToggleUIKeybind = "K"
 })
 
--- ===== TAB =====
 local Main = Window:CreateTab("Main", "home")
 
 Main:CreateLabel("🔑 Enter Premium Key")
 
--- ===== INPUT KEY =====
+-- ==============================
+-- LOAD KEYS (SAFE)
+-- ==============================
+local PremiumKeys = {}
+pcall(function()
+    local result = loadstring(game:HttpGet(LINKS.KEYS))()
+    if type(result) == "table" then
+        PremiumKeys = result
+    end
+end)
+
+local function IsValidKey(input)
+    for _, k in ipairs(PremiumKeys) do
+        if input == k then
+            return true
+        end
+    end
+    return false
+end
+
+-- ==============================
+-- INPUT
+-- ==============================
 local UserKey = ""
 
 Main:CreateInput({
@@ -52,10 +62,14 @@ Main:CreateInput({
     end
 })
 
--- ===== BUTTON LOAD =====
+-- ==============================
+-- BUTTONS
+-- ==============================
 Main:CreateButton({
     Name = "Unlock / Load Hub",
     Callback = function()
+        getgenv().From_Menu = true
+
         if IsValidKey(UserKey) then
             Rayfield:Notify({
                 Title = "KatovnHub",
@@ -66,7 +80,7 @@ Main:CreateButton({
         else
             Rayfield:Notify({
                 Title = "KatovnHub",
-                Content = "Invalid key → Loading Free version",
+                Content = "Invalid key → Loading Free",
                 Duration = 4
             })
             loadstring(game:HttpGet(LINKS.FREE))()
@@ -77,6 +91,7 @@ Main:CreateButton({
 Main:CreateButton({
     Name = "Load Free Version",
     Callback = function()
+        getgenv().From_Menu = true
         loadstring(game:HttpGet(LINKS.FREE))()
     end
 })
