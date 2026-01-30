@@ -8,14 +8,26 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local b = Rayfield:CreateWindow({
     Name = "🆓 KatovnHub | TSB (Free)",
+    Icon = 115055477301086, -- ✅ LOGO FREE
     LoadingTitle = "KatovnHub Free",
-    LoadingSubtitle = "Template Version",
+    LoadingSubtitle = "Community Version",
+    Theme = "DarkBlue", -- ✅ KHÔNG ĐỤNG PREMIUM
     ToggleUIKeybind = "K",
+
+    DisableRayfieldPrompts = false,
+    DisableBuildWarnings = false,
+
     ConfigurationSaving = {
         Enabled = true,
         FolderName = "KatovnHub",
         FileName = "TSB_Free"
-    }
+    },
+
+    Discord = {
+        Enabled = false
+    },
+
+    KeySystem = false
 })
 
 -- ===== TABS =====
@@ -26,7 +38,7 @@ local More        = b:CreateTab("Script More", "layers")
 local Discord     = b:CreateTab("Discord", "message-circle")
 local Setting     = b:CreateTab("Setting", "settings")
 
--- ===== TECH (VD) =====
+-- ===== TECH =====
 Tech:CreateButton({
     Name = "Button 1",
     Callback = function()
@@ -80,4 +92,3 @@ Setting:CreateButton({
         game:GetService("TeleportService"):Teleport(game.PlaceId, game.Players.LocalPlayer)
     end
 })
-
