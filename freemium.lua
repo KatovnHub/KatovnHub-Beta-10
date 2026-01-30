@@ -76,7 +76,7 @@ UpdatePrem:CreateLabel("🔔 Premium Update & Community")
 UpdatePrem:CreateButton({
     Name = "Join Discord (Premium Update)",
     Callback = function()
-        setclipboard("https://discord.gg/yourserver")
+        setclipboard("https://discord.gg/Nz9Drwczg")
         Rayfield:Notify({
             Title = "KatovnHub",
             Content = "Discord link copied!",
