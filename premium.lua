@@ -92,7 +92,7 @@ More:CreateButton({
 Discord:CreateButton({
     Name = "Copy Discord Invite",
     Callback = function()
-        setclipboard("https://discord.gg/yourserver")
+        setclipboard("https://discord.gg/Nz9Drwczg")
     end
 })
 
