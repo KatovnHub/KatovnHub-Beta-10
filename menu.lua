@@ -14,17 +14,16 @@ local LINKS = {
 }
 
 -- ===== LOAD KEYS =====
-local PremiumKeys = loadstring(game:HttpGet(LINKS.KEYS))()
+local PremiumKeys = {}
+local success, result = pcall(function()
+    return loadstring(game:HttpGet(LINKS.KEYS))()
+end)
 
-local function IsValidKey(input)
-    for _, key in ipairs(PremiumKeys) do
-        if input == key then
-            return true
-        end
-    end
-    return false
+if success and type(result) == "table" then
+    PremiumKeys = result
+else
+    warn("Failed to load keys.lua")
 end
-
 -- ===== MENU WINDOW =====
 local Window = Rayfield:CreateWindow({
     Name = "👑 KatovnHub | TSB",
