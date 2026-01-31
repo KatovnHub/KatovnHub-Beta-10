@@ -48,7 +48,7 @@ end
 -- ===== WINDOW =====
 local Window = Rayfield:CreateWindow({
     Name = "👑 KatovnHub | TSB Loader",
-    Icon = 95214547594099,
+    Icon = 92237982579352,
     LoadingTitle = "KatovnHub Loader",
     LoadingSubtitle = "Free / Premium System",
     ToggleUIKeybind = "K",
