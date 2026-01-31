@@ -104,4 +104,7 @@ Main:CreateButton({
     end
 })
 
-Main:CreateLabel("💎 Premium = Anti Hack • Combo • Full Moveset")
+Main:CreateLabel("💎 PREMIUM FEATURES:")
+Main:CreateLabel("✔ Anti / Solo Hacker")
+Main:CreateLabel("✔ Combo Script")
+Main:CreateLabel("✔ Full Hub Access")
