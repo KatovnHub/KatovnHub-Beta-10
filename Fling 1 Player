@@ -1,0 +1,103 @@
+--// Fling GUI - By KatovnHub
+-- standalone gui
+
+local Players = game:GetService("Players")
+local Player = Players.LocalPlayer
+
+-- GUI
+local gui = Instance.new("ScreenGui", game.CoreGui)
+gui.Name = "KatovnFlingGUI"
+
+local frame = Instance.new("Frame", gui)
+frame.Size = UDim2.fromScale(0.25,0.25)
+frame.Position = UDim2.fromScale(0.37,0.35)
+frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
+frame.BorderSizePixel = 0
+frame.Active = true
+frame.Draggable = true
+
+local title = Instance.new("TextLabel", frame)
+title.Size = UDim2.fromScale(1,0.2)
+title.Text = "Fling Hub - By KatovnHub"
+title.TextScaled = true
+title.BackgroundTransparency = 1
+title.TextColor3 = Color3.new(1,1,1)
+
+local box = Instance.new("TextBox", frame)
+box.Size = UDim2.fromScale(0.9,0.2)
+box.Position = UDim2.fromScale(0.05,0.25)
+box.PlaceholderText = "Player name..."
+box.Text = ""
+box.TextScaled = true
+
+local fling1 = Instance.new("TextButton", frame)
+fling1.Size = UDim2.fromScale(0.9,0.2)
+fling1.Position = UDim2.fromScale(0.05,0.5)
+fling1.Text = "Fling 1 Player"
+fling1.TextScaled = true
+
+local flingAll = Instance.new("TextButton", frame)
+flingAll.Size = UDim2.fromScale(0.9,0.2)
+flingAll.Position = UDim2.fromScale(0.05,0.75)
+flingAll.Text = "Fling All"
+flingAll.TextScaled = true
+
+-- core fling function (fixed)
+local function fling(TargetPlayer)
+    local Character = Player.Character
+    if not Character then return end
+    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+    local RootPart = Character:FindFirstChild("HumanoidRootPart")
+    if not Humanoid or not RootPart then return end
+
+    local TCharacter = TargetPlayer.Character
+    if not TCharacter then return end
+    local THumanoid = TCharacter:FindFirstChildOfClass("Humanoid")
+    local TRootPart = TCharacter:FindFirstChild("HumanoidRootPart")
+    if not THumanoid or not TRootPart then return end
+
+    getgenv().OldPos = RootPart.CFrame
+
+    local BV = Instance.new("BodyVelocity")
+    BV.Velocity = Vector3.new(9e9,9e9,9e9)
+    BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
+    BV.Parent = RootPart
+
+    for i = 1,25 do
+        RootPart.CFrame = TRootPart.CFrame * CFrame.Angles(math.rad(i*100),0,0)
+        RootPart.Velocity = Vector3.new(9e9,9e9,9e9)
+        task.wait()
+    end
+
+    BV:Destroy()
+
+    RootPart.CFrame = getgenv().OldPos
+    RootPart.Velocity = Vector3.zero
+end
+
+local function getPlayer(name)
+    name = name:lower()
+    for _,p in pairs(Players:GetPlayers()) do
+        if p ~= Player then
+            if p.Name:lower():match("^"..name) or p.DisplayName:lower():match("^"..name) then
+                return p
+            end
+        end
+    end
+end
+
+-- buttons
+fling1.MouseButton1Click:Connect(function()
+    local target = getPlayer(box.Text)
+    if target then
+        fling(target)
+    end
+end)
+
+flingAll.MouseButton1Click:Connect(function()
+    for _,p in pairs(Players:GetPlayers()) do
+        if p ~= Player then
+            fling(p)
+        end
+    end
+end)
