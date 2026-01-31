@@ -1,3 +1,5 @@
-KatovnHub Newb
-Katomcvn
-KatoNewb
+return {
+    "KatovnHub Newb",
+    "KatoNewb",
+    "Katodepzai"
+}
