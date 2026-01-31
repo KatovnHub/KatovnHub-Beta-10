@@ -83,10 +83,10 @@ Troll:CreateButton({
 })
 
 Troll:CreateButton({
-    Name = "Fling Player GUI",
+    Name = "Fling All Player",
     Callback = function()
         pcall(function()
-            loadstring(game:HttpGet("https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/Fling%20Player.lua"))()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/refs/heads/main/Fling%20All%20Players.lua"))()
         end)
     end
 })
