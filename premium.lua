@@ -8,7 +8,7 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
 local b = Rayfield:CreateWindow({
     Name = "💎 KatovnHub | TSB (Premium)",
-    Icon = 95214547594099, -- ✅ LOGO PREMIUM
+    Icon = 130837964343744, -- ✅ LOGO PREMIUM
     LoadingTitle = "KatovnHub Premium",
     LoadingSubtitle = "Golden Edition ✨",
     Theme = "AmberGlow", -- ✅ VÀNG KIM
