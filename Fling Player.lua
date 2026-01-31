@@ -1,18 +1,29 @@
-if game.CoreGui:FindFirstChild("KatovnFlingGui") then
-    game.CoreGui.KatovnFlingGui:Destroy()
-end
-
 local Players = game:GetService("Players")
 local lp = Players.LocalPlayer
 
 local function fling(target)
-    if not target.Character or not lp.Character then return end
+    if not lp.Character or not target.Character then return end
+
     local root = lp.Character:FindFirstChild("HumanoidRootPart")
     local troot = target.Character:FindFirstChild("HumanoidRootPart")
-    if root and troot then
-        root.CFrame = troot.CFrame
-        root.Velocity = Vector3.new(9999,9999,9999)
+
+    if not root or not troot then return end
+
+    local oldPos = root.CFrame
+
+    for i = 1, 40 do
+        root.CFrame = troot.CFrame * CFrame.new(0,0,-1.5)
+        root.Velocity = Vector3.new(0, 600, 0)
+        task.wait()
     end
+
+    root.CFrame = oldPos
+    root.Velocity = Vector3.zero
+end
+
+-- GUI popup
+if game.CoreGui:FindFirstChild("KatovnFlingGui") then
+    game.CoreGui.KatovnFlingGui:Destroy()
 end
 
 local gui = Instance.new("ScreenGui", game.CoreGui)
@@ -46,12 +57,11 @@ local box = Instance.new("TextBox", frame)
 box.Size = UDim2.fromScale(0.9,0.22)
 box.Position = UDim2.fromScale(0.05,0.25)
 box.PlaceholderText = "Enter username"
-box.Text = ""
 
-local flingOne = Instance.new("TextButton", frame)
-flingOne.Size = UDim2.fromScale(0.9,0.22)
-flingOne.Position = UDim2.fromScale(0.05,0.52)
-flingOne.Text = "🎯 Fling Player"
+local flingBtn = Instance.new("TextButton", frame)
+flingBtn.Size = UDim2.fromScale(0.9,0.22)
+flingBtn.Position = UDim2.fromScale(0.05,0.52)
+flingBtn.Text = "🎯 Fling Player"
 
 local flingAll = Instance.new("TextButton", frame)
 flingAll.Size = UDim2.fromScale(0.9,0.22)
@@ -65,7 +75,7 @@ status.Text = "Status: Ready"
 status.TextColor3 = Color3.new(1,1,1)
 status.BackgroundTransparency = 1
 
-flingOne.MouseButton1Click:Connect(function()
+flingBtn.MouseButton1Click:Connect(function()
     local target = Players:FindFirstChild(box.Text)
     if target then
         fling(target)
