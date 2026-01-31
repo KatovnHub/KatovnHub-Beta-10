@@ -74,12 +74,18 @@ Combo:CreateButton({
 
 -- ===== TROLL =====
 Troll:CreateButton({
-    Name = "",
+    Name = "Troll Player Anim",
     Callback = function()
-        -- script here
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/3LD4D0/FE-TROLLING-PLAYER-R6-R15/6eff8792afed57458d5114478b453a6f6bce5799/Fe%20trolling%20Player%20R6%20AND%20R15"))()
     end
 })
 
+Troll:CreateButton({
+    Name = "Troll Player Anim",
+    Callback = function()
+        loadstring(game:HttpGet("LINK1"))()
+    end
+})
 -- ===== SCRIPT MORE =====
 More:CreateButton({
     Name = "",
