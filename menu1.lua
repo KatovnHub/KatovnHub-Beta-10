@@ -1,111 +1,107 @@
--- =====================================
--- KatovnHub | Web Menu Loader
--- =====================================
+-- ==============================
+-- KatovnHub | TSB | MENU LOADER
+-- CLEAN VERSION
+-- ==============================
+
 if getgenv().Katovn_Menu_Loaded then return end
 getgenv().Katovn_Menu_Loaded = true
 
 local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 
--- ===== LINKS =====
+-- ===== RAW LINKS =====
 local LINKS = {
     FREE = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/freemium.lua",
     PREMIUM = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/premium.lua",
     KEYS = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/keys.lua"
 }
 
--- =====================================
--- WINDOW (WEB STYLE)
--- =====================================
-local Window = Rayfield:CreateWindow({
-    Name = "KatovnHub Dashboard",
-    Icon = 95214547594099,
-    LoadingTitle = "KatovnHub",
-    LoadingSubtitle = "Web Loader Panel",
-    Theme = "Default",
-    ToggleUIKeybind = "K"
-})
-
-local Tab = Window:CreateTab("Dashboard", "layout-dashboard")
-
-Tab:CreateSection("Access Panel")
-
--- =====================================
--- SAFE KEY LOAD
--- =====================================
+-- ===== LOAD KEYS SAFE =====
 local Keys = {}
 
-pcall(function()
-    local result = loadstring(game:HttpGet(LINKS.KEYS))()
-    if type(result) == "table" then
-        Keys = result
-    end
+local success, result = pcall(function()
+    return loadstring(game:HttpGet(LINKS.KEYS))()
 end)
 
-local function ValidKey(k)
-    for _, v in ipairs(Keys) do
-        if v == k then
+if success and type(result) == "table" then
+    Keys = result
+else
+    warn("Keys failed to load!")
+end
+
+-- ===== NORMALIZE KEY =====
+local function Normalize(text)
+    return tostring(text):lower():gsub("^%s*(.-)%s*$", "%1")
+end
+
+local function IsValidKey(input)
+    input = Normalize(input)
+
+    for _, key in ipairs(Keys) do
+        if Normalize(key) == input then
             return true
         end
     end
+
     return false
 end
 
--- =====================================
--- INPUT
--- =====================================
-local InputKey = ""
+-- ===== WINDOW =====
+local Window = Rayfield:CreateWindow({
+    Name = "👑 KatovnHub | TSB Loader",
+    Icon = 95214547594099,
+    LoadingTitle = "KatovnHub Loader",
+    LoadingSubtitle = "Free / Premium System",
+    ToggleUIKeybind = "K",
+    Theme = "Default"
+})
 
-Tab:CreateInput({
+local Main = Window:CreateTab("Main", "home")
+
+Main:CreateLabel("🔑 Enter Premium Key")
+
+local UserKey = ""
+
+Main:CreateInput({
     Name = "Premium Key",
-    PlaceholderText = "Enter access key...",
+    PlaceholderText = "Enter key here",
     RemoveTextAfterFocusLost = false,
-    Callback = function(txt)
-        InputKey = txt
+    Callback = function(text)
+        UserKey = text
     end
 })
 
--- =====================================
--- BUTTONS
--- =====================================
-Tab:CreateButton({
-    Name = "Load Hub",
+-- ===== LOAD BUTTON =====
+Main:CreateButton({
+    Name = "Unlock / Load Hub",
     Callback = function()
-        getgenv().From_Menu = true
 
-        if ValidKey(InputKey) then
+        if IsValidKey(UserKey) then
             Rayfield:Notify({
-                Title = "Access Granted",
-                Content = "Premium mode enabled",
+                Title = "KatovnHub",
+                Content = "Premium unlocked!",
                 Duration = 4
             })
+
             loadstring(game:HttpGet(LINKS.PREMIUM))()
+
         else
             Rayfield:Notify({
-                Title = "Free Mode",
-                Content = "Invalid or empty key",
+                Title = "KatovnHub",
+                Content = "Invalid key → Loading Free",
                 Duration = 4
             })
+
             loadstring(game:HttpGet(LINKS.FREE))()
         end
+
     end
 })
 
-Tab:CreateButton({
-    Name = "Load Free Only",
+Main:CreateButton({
+    Name = "Load Free Version",
     Callback = function()
-        getgenv().From_Menu = true
         loadstring(game:HttpGet(LINKS.FREE))()
     end
 })
 
-Tab:CreateSection("Information")
-
-Tab:CreateParagraph({
-    Title = "Premium",
-    Content = "Full moveset • Anti hacker • Combo script • Advanced tools"
-})
-
-Tab:CreateParagraph({
-    Title = "Free",
-    Content = "Basic moveset • Tech • Troll tools"
-})
+Main:CreateLabel("💎 Premium = Anti Hack • Combo • Full Moveset")
