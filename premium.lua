@@ -91,6 +91,15 @@ Troll:CreateButton({
     end
 })
 
+Troll:CreateButton({
+    Name = "Fling 1 Player",
+    Callback = function()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/refs/heads/main/Fling%201%20Player"))()
+        end)
+    end
+})
+
 -- ===== SCRIPT MORE =====
 More:CreateButton({
     Name = "",
