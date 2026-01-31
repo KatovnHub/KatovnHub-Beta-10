@@ -76,16 +76,21 @@ Combo:CreateButton({
 Troll:CreateButton({
     Name = "Troll Player Anim",
     Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/3LD4D0/FE-TROLLING-PLAYER-R6-R15/6eff8792afed57458d5114478b453a6f6bce5799/Fe%20trolling%20Player%20R6%20AND%20R15"))()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/3LD4D0/FE-TROLLING-PLAYER-R6-R15/main/Fe%20trolling%20Player%20R6%20AND%20R15"))()
+        end)
     end
 })
 
 Troll:CreateButton({
-    Name = "Troll Player Anim",
+    Name = "Fling Player GUI",
     Callback = function()
-        loadstring(game:HttpGet("LINK1"))()
+        pcall(function()
+            loadstring(game:HttpGet("https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/Fling%20Player.lua"))()
+        end)
     end
 })
+
 -- ===== SCRIPT MORE =====
 More:CreateButton({
     Name = "",
