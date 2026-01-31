@@ -11,7 +11,7 @@ local Rayfield = loadstring(game:HttpGet("https://sirius.menu/rayfield"))()
 -- ===== RAW LINKS =====
 local LINKS = {
     FREE = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/freemium.lua",
-    PREMIUM = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/premium.lua",
+    PREMIUM = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/refs/heads/main/premium.lua",
     KEYS = "https://raw.githubusercontent.com/KatovnHub/KatovnHub-Beta-10/main/keys.lua"
 }
 
