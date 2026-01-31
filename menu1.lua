@@ -1,5 +1,5 @@
 -- =====================================
--- KatovnHub | Fluent Menu Loader
+-- KatovnHub | Web Menu Loader
 -- =====================================
 if getgenv().Katovn_Menu_Loaded then return end
 getgenv().Katovn_Menu_Loaded = true
@@ -14,39 +14,36 @@ local LINKS = {
 }
 
 -- =====================================
--- WINDOW (FLUENT STYLE)
+-- WINDOW (WEB STYLE)
 -- =====================================
 local Window = Rayfield:CreateWindow({
-    Name = "👑 KatovnHub | TSB",
-    Icon = 95214547594099, -- prem icon
+    Name = "KatovnHub Dashboard",
+    Icon = 95214547594099,
     LoadingTitle = "KatovnHub",
-    LoadingSubtitle = "Fluent Menu Loader",
-    Theme = "Dark",
+    LoadingSubtitle = "Web Loader Panel",
+    Theme = "Default",
     ToggleUIKeybind = "K"
 })
 
--- =====================================
--- TAB
--- =====================================
-local MainTab = Window:CreateTab("Menu", "home")
+local Tab = Window:CreateTab("Dashboard", "layout-dashboard")
 
-MainTab:CreateSection("🔑 Premium Access")
+Tab:CreateSection("Access Panel")
 
 -- =====================================
--- LOAD KEYS (SAFE)
+-- SAFE KEY LOAD
 -- =====================================
-local PremiumKeys = {}
+local Keys = {}
 
 pcall(function()
-    local data = loadstring(game:HttpGet(LINKS.KEYS))()
-    if type(data) == "table" then
-        PremiumKeys = data
+    local result = loadstring(game:HttpGet(LINKS.KEYS))()
+    if type(result) == "table" then
+        Keys = result
     end
 end)
 
-local function IsPremium(key)
-    for _, v in ipairs(PremiumKeys) do
-        if key == v then
+local function ValidKey(k)
+    for _, v in ipairs(Keys) do
+        if v == k then
             return true
         end
     end
@@ -56,36 +53,36 @@ end
 -- =====================================
 -- INPUT
 -- =====================================
-local UserKey = ""
+local InputKey = ""
 
-MainTab:CreateInput({
+Tab:CreateInput({
     Name = "Premium Key",
-    PlaceholderText = "Enter your key here",
+    PlaceholderText = "Enter access key...",
     RemoveTextAfterFocusLost = false,
-    Callback = function(text)
-        UserKey = text
+    Callback = function(txt)
+        InputKey = txt
     end
 })
 
 -- =====================================
 -- BUTTONS
 -- =====================================
-MainTab:CreateButton({
-    Name = "🚀 Load Hub",
+Tab:CreateButton({
+    Name = "Load Hub",
     Callback = function()
         getgenv().From_Menu = true
 
-        if IsPremium(UserKey) then
+        if ValidKey(InputKey) then
             Rayfield:Notify({
-                Title = "KatovnHub",
-                Content = "Premium unlocked!",
+                Title = "Access Granted",
+                Content = "Premium mode enabled",
                 Duration = 4
             })
             loadstring(game:HttpGet(LINKS.PREMIUM))()
         else
             Rayfield:Notify({
-                Title = "KatovnHub",
-                Content = "Invalid key → Loading Free",
+                Title = "Free Mode",
+                Content = "Invalid or empty key",
                 Duration = 4
             })
             loadstring(game:HttpGet(LINKS.FREE))()
@@ -93,25 +90,22 @@ MainTab:CreateButton({
     end
 })
 
-MainTab:CreateButton({
-    Name = "🆓 Load Free Version",
+Tab:CreateButton({
+    Name = "Load Free Only",
     Callback = function()
         getgenv().From_Menu = true
         loadstring(game:HttpGet(LINKS.FREE))()
     end
 })
 
--- =====================================
--- INFO (FLUENT)
--- =====================================
-MainTab:CreateSection("ℹ️ Info")
+Tab:CreateSection("Information")
 
-MainTab:CreateParagraph({
-    Title = "Premium Features",
-    Content = "• Anti Hacker\n• Combo Script\n• Full Moveset\n• Advanced Tech"
+Tab:CreateParagraph({
+    Title = "Premium",
+    Content = "Full moveset • Anti hacker • Combo script • Advanced tools"
 })
 
-MainTab:CreateParagraph({
-    Title = "Free Version",
-    Content = "• Basic Tech\n• Moveset\n• Troll Player\n• Script More"
+Tab:CreateParagraph({
+    Title = "Free",
+    Content = "Basic moveset • Tech • Troll tools"
 })
