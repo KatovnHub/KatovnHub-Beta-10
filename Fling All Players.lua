@@ -1,122 +1,109 @@
---// GUI
+-- =================================
+-- FE FLING ALL
+-- By KatovnHub
+-- Fixed + Clean Version
+-- =================================
+
+local Targets = {"All"}
+
 local Players = game:GetService("Players")
 local Player = Players.LocalPlayer
 
-local gui = Instance.new("ScreenGui", game.CoreGui)
-gui.Name = "KatovnFling"
-
-local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.new(0, 220, 0, 120)
-frame.Position = UDim2.new(0.5, -110, 0.5, -60)
-frame.BackgroundColor3 = Color3.fromRGB(20,20,20)
-frame.BorderSizePixel = 0
-frame.Active = true
-frame.Draggable = true
-
-local title = Instance.new("TextLabel", frame)
-title.Size = UDim2.new(1,0,0,30)
-title.Text = "Fling All • by KatovnHub"
-title.BackgroundTransparency = 1
-title.TextColor3 = Color3.fromRGB(255,215,0)
-title.TextScaled = true
-title.Font = Enum.Font.GothamBold
-
-local button = Instance.new("TextButton", frame)
-button.Size = UDim2.new(1,-20,0,50)
-button.Position = UDim2.new(0,10,0,50)
-button.Text = "FLING ALL"
-button.TextScaled = true
-button.Font = Enum.Font.GothamBold
-button.BackgroundColor3 = Color3.fromRGB(255,170,0)
-button.TextColor3 = Color3.new(0,0,0)
-
-----------------------------------------------------
--- ENGINE FLING (code của bạn)
-----------------------------------------------------
-
-local Targets = {"All"}
 local AllBool = false
 
-local GetPlayer = function(Name)
+local function GetPlayer(Name)
     Name = Name:lower()
     if Name == "all" or Name == "others" then
         AllBool = true
         return
+    elseif Name == "random" then
+        local GetPlayers = Players:GetPlayers()
+        table.remove(GetPlayers, table.find(GetPlayers, Player))
+        return GetPlayers[math.random(#GetPlayers)]
+    else
+        for _,x in next, Players:GetPlayers() do
+            if x ~= Player then
+                if x.Name:lower():match("^"..Name)
+                or x.DisplayName:lower():match("^"..Name) then
+                    return x
+                end
+            end
+        end
     end
 end
 
-local Message = function(t,x,d)
-    game:GetService("StarterGui"):SetCore("SendNotification",{Title=t,Text=x,Duration=d})
+local function Message(title, text, time)
+    game:GetService("StarterGui"):SetCore("SendNotification", {
+        Title = title,
+        Text = text,
+        Duration = time
+    })
 end
 
-local SkidFling = function(TargetPlayer)
+local function SkidFling(TargetPlayer)
     local Character = Player.Character
-    local Humanoid = Character and Character:FindFirstChildOfClass("Humanoid")
-    local RootPart = Humanoid and Humanoid.RootPart
+    if not Character then return end
 
-    if not TargetPlayer.Character or not RootPart then return end
+    local Humanoid = Character:FindFirstChildOfClass("Humanoid")
+    local RootPart = Humanoid and Humanoid.RootPart
+    if not RootPart then return end
 
     local TCharacter = TargetPlayer.Character
+    if not TCharacter then return end
+
     local THumanoid = TCharacter:FindFirstChildOfClass("Humanoid")
-    if not THumanoid then return end
-
-    local TRootPart = THumanoid.RootPart
+    local TRootPart = THumanoid and THumanoid.RootPart
     local THead = TCharacter:FindFirstChild("Head")
-    local Accessory = TCharacter:FindFirstChildOfClass("Accessory")
-    local Handle
 
-    if Accessory and Accessory:FindFirstChild("Handle") then
-        Handle = Accessory.Handle
-    end
+    local Accessory = TCharacter:FindFirstChildOfClass("Accessory")
+    local Handle = Accessory and Accessory:FindFirstChild("Handle")
 
     if RootPart.Velocity.Magnitude < 50 then
         getgenv().OldPos = RootPart.CFrame
     end
 
-    local function FPos(BasePart,Pos,Ang)
-        RootPart.CFrame = CFrame.new(BasePart.Position) * Pos * Ang
-        Character:SetPrimaryPartCFrame(CFrame.new(BasePart.Position) * Pos * Ang)
-        RootPart.Velocity = Vector3.new(9e7,9e7*10,9e7)
-        RootPart.RotVelocity = Vector3.new(9e8,9e8,9e8)
-    end
-
-    local function SF(BasePart)
-        local Time=tick()
-        repeat
-            FPos(BasePart,CFrame.new(0,1.5,0),CFrame.Angles(math.rad(90),0,0))
-            task.wait()
-        until tick()>Time+1
-    end
-
     workspace.FallenPartsDestroyHeight = 0/0
 
-    local BV=Instance.new("BodyVelocity",RootPart)
-    BV.Velocity=Vector3.new(9e8,9e8,9e8)
-    BV.MaxForce=Vector3.new(1/0,1/0,1/0)
+    local BV = Instance.new("BodyVelocity")
+    BV.Name = "KatovnVel"
+    BV.Parent = RootPart
+    BV.Velocity = Vector3.new(9e8,9e8,9e8)
+    BV.MaxForce = Vector3.new(math.huge,math.huge,math.huge)
 
-    if TRootPart then SF(TRootPart)
-    elseif THead then SF(THead)
-    elseif Handle then SF(Handle) end
+    Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,false)
 
-    BV:Destroy()
-    workspace.CurrentCamera.CameraSubject=Humanoid
+    local BasePart = THead or TRootPart or Handle
+    if not BasePart then
+        Message("KatovnHub","Target invalid",3)
+        return
+    end
+
+    local Time = tick()
 
     repeat
-        RootPart.CFrame=getgenv().OldPos
+        RootPart.CFrame = BasePart.CFrame * CFrame.new(0,1,0)
+        RootPart.Velocity = Vector3.new(9e7,9e7,9e7)
+        RootPart.RotVelocity = Vector3.new(9e8,9e8,9e8)
         task.wait()
-    until (RootPart.Position-getgenv().OldPos.p).Magnitude<25
+    until tick() > Time + 2
+
+    BV:Destroy()
+    Humanoid:SetStateEnabled(Enum.HumanoidStateType.Seated,true)
+
+    repeat
+        RootPart.CFrame = getgenv().OldPos
+        task.wait()
+    until (RootPart.Position - getgenv().OldPos.p).Magnitude < 5
 end
 
-----------------------------------------------------
--- BUTTON ACTION
-----------------------------------------------------
+Message("KatovnHub","Fling All Loaded",4)
 
-button.MouseButton1Click:Connect(function()
-    Message("KatovnHub","Flinging everyone...",3)
+for _,x in next, Targets do GetPlayer(x) end
 
-    for _,p in pairs(Players:GetPlayers()) do
-        if p~=Player then
-            SkidFling(p)
+if AllBool then
+    for _,x in next, Players:GetPlayers() do
+        if x ~= Player then
+            SkidFling(x)
         end
     end
-end)
+end
